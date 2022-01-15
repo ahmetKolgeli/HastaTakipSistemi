@@ -1,5 +1,5 @@
 # HastaTakipSistemi
-Hasta Takip-Kayıt sistemi.\n
+Hasta Takip-Kayıt sistemi.
 Hasta sayısı girilir.
 Sırayla hasta bilgileri girilir.
 Menüyle işlemler yapılır.
