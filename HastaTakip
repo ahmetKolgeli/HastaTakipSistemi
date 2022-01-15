@@ -1,0 +1,222 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace HastaTakipSistemi
+{
+    enum RandevuGunu
+    {
+        Pazartesi,
+        Salı,
+        Çarşamba,
+        Perşembe,
+        Cuma,
+    }
+    class Program
+    {
+       
+        class Hasta
+        {
+            public static void MenuGetir()
+            {
+                Console.WriteLine("1)Listeleme\n2)İsim Arama\n3)Yaş Arama\n4)Yaş Ortalaması\n5)En yüksek yaş\n6)En düşük yaş\n7)Randevu Günü Ver\n8)Doktor Puanı\n9)Çıkış");
+                Console.WriteLine("-----------------------------------");
+
+            }
+            public static void Listeleme(string[] ad, string[] soyad, byte[] yas, string[] hastalik, int[] tcNo)
+            {
+                for (int i = 0; i < ad.Length; i++)
+                {
+                    Console.WriteLine("-----------------------------------");
+                    Console.WriteLine("Hastanın Adı: " + ad[i]);
+                    Console.WriteLine("Hastanın Soyadı: " + soyad[i]);
+                    Console.WriteLine("Hastanın Yaşı: " + yas[i]);
+                    Console.WriteLine("Hastalığı: " + hastalik[i]);
+                    Console.WriteLine("TC NO: " + tcNo[i]);
+                    Console.WriteLine("-----------------------------------");
+                }
+            }
+            public static int YasOrtalamasi(byte[] yas)
+            {
+                int yasToplam = 0;
+                for (int i = 0; i < yas.Length; i++)
+                {
+                    yasToplam += yas[i];
+                }
+                return yasToplam / yas.Length;
+
+            }
+            public static void YuksekYas(string[] ad, string[] soyad, byte[] yas, string[] hastalik, int[] tcNo)
+            {
+                int bYas = yas[0];
+                for (int i = 1; i < yas.Length; i++)
+                {
+                    if (yas[i] > bYas)
+                    {
+                        bYas = yas[i];
+                    }                    
+                }                
+                Console.WriteLine("En Yüksek Yaş: "+bYas);
+            }
+            public void KucukYas(string[] ad, string[] soyad, byte[] yas, string[] hastalik, int[] tcNo)
+            {
+                int kYas = yas[0];
+                for (int i = 1; i < yas.Length; i++)
+                {
+                    if (yas[i] < kYas)
+                    {
+                        kYas = yas[i];
+                    }
+                }
+                Console.WriteLine("En Yüksek Yaş: " + kYas);
+            }
+          
+        }
+
+        class DoktorBilgi:Hasta
+        {
+            struct Doktor
+            {
+                public string ad;
+                public string soyad;
+                public byte yas;
+                public int tcNO;                
+            }
+            public int doktorPuani;
+            public int DoktorPuani
+            {
+                get 
+                {
+                    return doktorPuani;
+                }
+                set 
+                {
+                    if (value < 0) 
+                    { 
+                        doktorPuani = 0; 
+                    }
+                    else
+                    {
+                        doktorPuani = value;
+                    }
+                }
+            }
+        }
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hasta Sayısı giriniz: ");
+            byte n = Byte.Parse(Console.ReadLine());
+
+            string[] ad = new string[n];
+            string[] soyad = new string[n];
+            byte[] yas = new byte[n];
+            string[] hastalik = new string[n];
+            int[] tcNo = new int[n];
+            const byte SONO=34; //Sağlık ocağı no
+
+            //VERİ GİRİŞİ
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine("Hastanın adını giriniz: ");
+                ad[i] = Console.ReadLine();
+                Console.WriteLine("Hastanın soyadını giriniz: ");
+                soyad[i] = Console.ReadLine();
+                Console.WriteLine("Hastanın yaşını giriniz: ");
+                yas[i] = byte.Parse(Console.ReadLine());
+                Console.WriteLine("Hastanın hastalığını giriniz: ");
+                hastalik[i] = Console.ReadLine();
+                Console.WriteLine("Hastanın TC Kimlik Numarasını giriniz: ");
+                tcNo[i] = int.Parse(Console.ReadLine());
+            }
+
+            for (; ; )
+            {
+                Hasta.MenuGetir();
+                Console.WriteLine("Seçiminizi giriniz: ");
+                byte menu = byte.Parse(Console.ReadLine());
+
+                switch (menu)
+                {
+                    case 1:
+                        Hasta.Listeleme(ad, soyad, yas, hastalik, tcNo);
+                        break;
+                    case 2:
+                        String arananAd;
+                        Console.WriteLine("Aranan Adı giriniz: ");
+                        arananAd = Console.ReadLine();
+                        arananAd.Trim();//String Metodu
+                        Console.WriteLine(arananAd + " Kişisinin bilgileri: ");
+                        for (int i = 0; i < n; i++)
+                        {
+                            if (ad[i].Equals(arananAd))
+                            {
+                                Console.WriteLine("-----------------------------------");
+                                Console.WriteLine("Hastanın Soyadı: " + soyad[i]);
+                                Console.WriteLine("Hastanın Yaşı: " + yas[i]);
+                                Console.WriteLine("Hastalığı: " + hastalik[i]);
+                                Console.WriteLine("TC NO: " + tcNo[i]);
+                                Console.WriteLine("Sağlık ocağı NO: " + SONO);
+                                Console.WriteLine("-----------------------------------");
+                            }
+                        }
+                        break;
+                    case 3:
+                        byte arananYas;
+                        Console.WriteLine("Aranan Yaşı giriniz: ");
+                        arananYas = byte.Parse(Console.ReadLine());
+                        Console.WriteLine(arananYas + " yaşındaki kişilerin bilgileri: ");
+                        for (int i = 0; i < n; i++)
+                        {
+                            if (yas[i] == arananYas)
+                            {
+                                Console.WriteLine("-----------------------------------");
+                                Console.WriteLine("Hastanın Adı: " + ad[i]);
+                                Console.WriteLine("Hastanın Soyadı: " + soyad[i]);
+                                Console.WriteLine("Hastanın Yaşı: " + yas[i]);
+                                Console.WriteLine("Hastalığı: " + hastalik[i]);
+                                Console.WriteLine("TC NO: " + tcNo[i]);
+                                Console.WriteLine("Sağlık ocağı NO: " + SONO);
+                                Console.WriteLine("-----------------------------------");
+                            }
+                        }
+                        break;
+                    case 4:
+                        int sonuc = Hasta.YasOrtalamasi(yas);
+                        Console.WriteLine("Yaş ortalaması: " + sonuc);
+                        break;
+                    case 5:
+                        Hasta.YuksekYas(ad, soyad, yas, hastalik, tcNo);
+                        break;
+                    case 6:
+                        Hasta hst = new Hasta();
+                        hst.KucukYas(ad, soyad, yas, hastalik, tcNo);
+                        break;
+                    case 7:
+                        int random;
+                        Random rnd = new Random();
+                        random = rnd.Next(0, 5);
+                        RandevuGunu gun;
+                        gun = (RandevuGunu)random;
+                        Console.WriteLine("Randevu gününüz: " + gun);
+                        break;
+                    case 8:
+                        DoktorBilgi db = new DoktorBilgi();
+                        Console.WriteLine("Doktor puanı giriniz: ");
+                        db.DoktorPuani=(Convert.ToByte(Console.ReadLine()));
+                        Console.WriteLine("Doktor puanı: "+db.DoktorPuani);
+                        break;
+                    case 9:
+                        System.Environment.Exit(0);
+                        break;
+                    default:
+                        Console.WriteLine("Yanlış menü değeri girdiniz. Tekrar deneyiniz.");
+                        break;
+                }
+            }
+
+            Console.ReadKey();
+        }
+    }
+}
